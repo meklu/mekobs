@@ -1,0 +1,5 @@
+{
+        "python.analysis.extraPaths": [
+                "/usr/lib64/obs-scripting/"
+        ]
+}
