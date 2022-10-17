@@ -1,8 +1,13 @@
 # Partially based on https://raw.githubusercontent.com/dmadison/OBS-Mute-Indicator/master/scripts/OBS_Mute_Indicator.py
+
 # The next step is integrating simpleobsws somehow to gauge the volume of the
 # monitored source so as to not constantly play the indicator sound when the
 # monitored source is muted. The idea is to only play noise when speaking into
 # a muted microphone.
+
+# Alternatively, do as described at
+# https://github.com/upgradeQ/OBS-Studio-Python-Scripting-Cheatsheet-obspython-Examples-of-API#access-source-db-volume-level
+# Seems a bit clunky, as it requires LD_PRELOADing libpython.so
 
 import obspython as obs
 
@@ -76,6 +81,7 @@ def handle_muted(props = None, property = None):
 		print(__file__ + ": No indicator set")
 		return
 	obs.obs_source_set_monitoring_type(indicator, obs.OBS_MONITORING_TYPE_MONITOR_ONLY)
+	obs.obs_source_media_restart(indicator)
 	obs.obs_source_set_muted(indicator, not monitored_is_muted)
 
 	obs.obs_source_release(source)
