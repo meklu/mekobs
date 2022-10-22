@@ -1,5 +1,23 @@
 # Partially based on https://raw.githubusercontent.com/dmadison/OBS-Mute-Indicator/master/scripts/OBS_Mute_Indicator.py
 
+## README
+
+# This is a simple script for OBS studio. When you mute the monitored source
+# (usually your microphone), it starts playing the specified indicator.
+# Just install the script and use the settings to control which sources you
+# wish to use. The script also comes with a silly little waveform file that you
+# can freely use as the indicator sound, if you happen to be lacking in one.
+
+# The script automatically makes it so that the indicator sound is only played
+# into the monitor. This means you should also set up a separate monitor device
+# on your computer. With PulseAudio for instance you can just configure the
+# audio server to spawn another "sink" (playback device) and configure that to
+# be your monitor device in OBS' audio settings.
+#   With my own setup I have two "virtual" sinks in PA that are both connected
+# to a JACK2 sound server's system output device.
+
+## TODO
+
 # The next step is integrating simpleobsws somehow to gauge the volume of the
 # monitored source so as to not constantly play the indicator sound when the
 # monitored source is muted. The idea is to only play noise when speaking into
@@ -69,6 +87,8 @@ def uninstall_handler():
 
 def handle_muted(props = None, property = None):
 	global monitored_source_name, indicator_source_name
+	if indicator_source_name == monitored_source_name:
+		print(__file__ + ": Monitored and indicator sources are the same, bailing out")
 	source = obs.obs_get_source_by_name(monitored_source_name)
 	if not source:
 		print(__file__ + ": No source set")
